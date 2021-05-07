@@ -1,0 +1,14 @@
+[Unit]
+Description=CKB node
+After=network.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=no
+RestartSec=2
+User=root
+ExecStart={{ ckb.workspace }}/ckb run -C {{ ckb.workspace }}
+
+[Install]
+WantedBy=multi-user.target
