@@ -1,2 +1,7 @@
 ---
-# handlers file for ansible-ckb
+- name: Restart CKB
+  become: true
+  service:
+    name: {{ ckb.service }}
+    state: restarted
+    daemon_reload: true
