@@ -1,0 +1,35 @@
+- name: RPC Call `local_node_info`
+  uri:
+    url: "http://{{ ckb.rpc.listen_address }}"
+    methos: POST
+    body_format: json
+    body:
+      id: 0
+      jsonrpc: "2.0"
+      method: "local_node_info"
+      params: []
+    headers:
+      Content-Type: "application/json"
+  register: local_node_info
+
+- name: Print `local_node_info`
+  debug:
+    msg: {{ local_node_info.json.result }}
+
+- name: RPC Call `get_tip_block_number`
+  uri:
+    url: "http://{{ ckb.rpc.listen_address }}"
+    method: POST
+    body_format: json
+    body:
+      id: 0
+      jsonrpc: "2.0"
+      method: "get_tip_block_number"
+      params: []
+    headers:
+      Content-Type: "application/json"
+  register: get_tip_block_number 
+
+- name: Print `get_tip_block_numner`
+  debug:
+    msg: {{ get_tip_block_number.json.result }}

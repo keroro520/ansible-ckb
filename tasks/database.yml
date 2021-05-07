@@ -1,0 +1,13 @@
+---
+- name: Download Database Data
+  get_url:
+    url: {{ ckb.database_url }}
+    dest: /tmp/ckbdb.tar.gz
+  when: ckb.database_url is defined and ckb.database_url != ''
+
+- name: Unarchive Database Data
+  unarchive:
+    remote_src: true
+    src: /tmp/ckbdb.tar.gz
+    dest: {{ ckb.workspace }}/data/
+  when: ckb.database_url is defined and ckb.database_url != ''

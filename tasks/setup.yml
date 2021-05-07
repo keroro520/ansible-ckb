@@ -1,0 +1,26 @@
+- name: Create ckb Group
+  become: true
+  group:
+    name: ckb
+
+- name: Create ckb User
+  become: true
+  user:
+    name: ckb
+    group: ckb
+    create_home: true
+    generate_ssh_key: true
+
+- name: Ensure CKB Configuration Directories Exist
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    group: ckb
+    owner: ckb
+    mode: 0777
+  with_items:
+    - "{{ ckb.workspace }}"
+    - "{{ ckb.workspace }}/data"
+    - "{{ ckb.workspace }}/data/db"
+    - "{{ ckb.workspace }}/data/network"

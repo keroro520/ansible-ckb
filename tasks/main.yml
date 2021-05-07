@@ -1,2 +1,41 @@
 ---
-# tasks file for ansible-ckb
+- include: preflight.yml
+  tags:
+    - ckb_preflight
+    - ckb_setup
+    - ckb_configure
+    - ckb_database
+    - ckb_install
+
+- include: setup.yml
+  tags:
+    - ckb_setup
+    - ckb_configure
+    - ckb_database
+    - ckb_install
+
+- include: configure.yml
+  tags:
+    - ckb_configure
+
+- include: database.yml
+  tags:
+    - ckb_database
+
+- include: install.yml
+  tags:
+    - ckb_install
+
+- name: Restart CKB
+  meta: flush_handlers
+  tags:
+    - ckb_install
+    - ckb_configure
+
+- name: Stop CKB
+  become: true
+  service:
+    name: {{ ckb.service }}
+    state: stopped
+  tags:
+    - ckb_stop

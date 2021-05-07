@@ -1,0 +1,42 @@
+---
+- name: Install CKB From Local Source
+  copy:
+    force: true
+    src: {{ ckb.local_source }}
+    dest: {{ ckb.workspace }}/ckb
+    group: ckb
+    user: ckb
+    mode: 0777
+  when:
+    - ckb.local_source is defined
+
+- name: Install CKB From Remote Source
+  block:
+    - name: Download CKB Tarball From URL
+      become: true
+      get_url:
+        force: true
+        url: {{ ckb.download_url }}
+        dest: /tmp/
+
+    - name: Install CKB
+      become: true
+      unarchive:
+        remove_src: yes
+        src: /tmp/{{ ckb.download_url | basename }}
+        dest: {{ ckb.workspace }}
+        mode: 0777
+        extra_opts:
+          - --wildcards
+          - '*ckb'             # unarchive "ckb" only
+          - --transform
+          - 's/.*\/ckb$/ckb/'  # transform "xxx/ckb" => "ckb"
+      when: not ckb.download_url.endswith(".7z")
+
+    - name: Install CKB
+      become: true
+      shell: |
+        7z e -y -o'{{ ckb.workspace }}' '/tmp/{{ ckb.download_url | basename }}' '*/ckb'
+      when: ckb.download_url.endswith(".7z")
+  when:
+    - ckb.local_source is not defined and ckb.download_url is defined

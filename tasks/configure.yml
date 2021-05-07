@@ -1,0 +1,36 @@
+---
+- name: Create CKB Service File
+  become: true
+  template:
+    src: ckb.service.j2
+    dest: /etc/systemd/system/{{ ckb.service }}.service
+  notify: Restart CKB
+
+- name: Create CKB Main Configuration File
+  template:
+    src: ckb.toml.j2
+    dest: {{ ckb.workspace }}/ckb.toml
+  notify: Restart CKB
+
+- name: Create CKB Network Secret Key
+  copy:
+    src: {{ ckb.network_secret_key }}
+    dest: {{ ckb.workspace }}/data/network/secret_key
+  notify: Restart CKB
+  when:
+    - ckb.network_secret_key is defined
+
+- name: Create Chain Spec
+  template:
+    src: {{ ckb.spec.file }}
+    dest: {{ ckb.workspace }}/spec.toml
+  notify: Restart CKB
+  when:
+    - ckb.spec.file is defined and ckb.spec.file != ''
+
+- name: Enable And Start CKB Systemd Unit
+  service:
+    name: {{ ckb.service }}.service
+    enabled: true
+    state: started
+    daemon_reload: true
