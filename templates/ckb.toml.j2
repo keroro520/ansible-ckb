@@ -29,7 +29,7 @@ cache_size = {{ ckb_db_cache_size | default("134217728") }}
 
 # Provide an options file to tune RocksDB for your workload and your system configuration.
 # More details can be found in [the official tuning guide](https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide).
-options_file = "default.db-options"
+options_file = "{{ ckb_db_options_file | default("default.db-options") }}"
 
 [network]
 listen_addresses = {{ ckb_network_listen_addresses | default(["/ip4/0.0.0.0/tcp/8115"]) }}
