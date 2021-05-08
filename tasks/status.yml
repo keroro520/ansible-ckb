@@ -1,7 +1,7 @@
 - name: RPC Call `local_node_info`
   uri:
-    url: "http://{{ ckb.rpc.listen_address }}"
-    methos: POST
+    url: "http://{{ ckb_rpc_listen_address }}"
+    method: POST
     body_format: json
     body:
       id: 0
@@ -18,7 +18,7 @@
 
 - name: RPC Call `get_tip_block_number`
   uri:
-    url: "http://{{ ckb.rpc.listen_address }}"
+    url: "http://{{ ckb_rpc_listen_address }}"
     method: POST
     body_format: json
     body:

@@ -20,7 +20,6 @@
     owner: ckb
     mode: 0777
   with_items:
-    - "{{ ckb.workspace }}"
-    - "{{ ckb.data_dir }}"
-    - "{{ ckb.data_dir }}/db"
-    - "{{ ckb.data_dir }}/network"
+    - "{{ ckb_workspace }}"
+    - "{{ ckb_data_dir }}"
+    - "{{ ckb_data_dir }}/network"

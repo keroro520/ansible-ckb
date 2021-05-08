@@ -8,34 +8,51 @@
     - ckb_install
 
 - include: setup.yml
+  become: true
   tags:
     - ckb_setup
     - ckb_configure
     - ckb_database
     - ckb_install
 
+- include: install.yml
+  become: true
+  tags:
+    - ckb_install
+
 - include: configure.yml
+  become: true
   tags:
     - ckb_configure
 
 - include: database.yml
+  become: true
   tags:
     - ckb_database
 
-- include: install.yml
+- include: status.yml
   tags:
-    - ckb_install
+    - ckb_status
 
 - name: Restart CKB
+  become: true
   meta: flush_handlers
   tags:
     - ckb_install
     - ckb_configure
 
+- name: Stop CKB
+  become: true
+  service:
+    name: "{{ ckb_service }}"
+    state: stopped
+  tags:
+    - ckb_stop
+
 - name: Restart CKB
   become: true
   service:
-    name: "{{ ckb.service }}"
+    name: "{{ ckb_service }}"
     state: restarted
   tags:
     - ckb_restart
@@ -43,15 +60,14 @@
 - name: Start CKB
   become: true
   service:
-    name: "{{ ckb.service }}"
+    name: "{{ ckb_service }}"
     state: started
   tags:
     - ckb_start
 
-- name: Stop CKB
-  become: true
-  service:
-    name: "{{ ckb.service }}"
-    state: stopped
+- name: Wait For CKB RPC Service Launched
+  wait_for:
+    port: "{{ ckb_rpc_listen_address | regex_replace(\".*:\", \"\") }}"
   tags:
-    - ckb_stop
+    - ckb_restart
+    - ckb_start

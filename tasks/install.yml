@@ -1,14 +1,15 @@
 ---
+# TODO assert ckb_download_url and ckb_local_source
 - name: Install CKB From Local Source
   copy:
     force: true
-    src: "{{ ckb.local_source }}"
-    dest: "{{ ckb.workspace }}/ckb"
+    src: "{{ ckb_local_source }}"
+    dest: "{{ ckb_workspace }}/ckb"
     group: ckb
     user: ckb
     mode: "+x"
   when:
-    - ckb.local_source is defined and ckb.local_source != ''
+    - ckb_local_source is defined and ckb_local_source != ''
 
 - name: Install CKB From Remote Source
   block:
@@ -16,27 +17,27 @@
       become: true
       get_url:
         force: true
-        url: "{{ ckb.download_url }}"
+        url: "{{ ckb_download_url }}"
         dest: /tmp/
 
     - name: Install CKB
       become: true
       unarchive:
         remote_src: true
-        src: "/tmp/{{ ckb.download_url | basename }}"
-        dest: "{{ ckb.workspace }}"
+        src: "/tmp/{{ ckb_download_url | basename }}"
+        dest: "{{ ckb_workspace }}"
         mode: 0777
         extra_opts:
           - --wildcards
           - '*ckb'             # unarchive "ckb" only
           - --transform
           - 's/.*\/ckb$/ckb/'  # transform "xxx/ckb" => "ckb"
-      when: not ckb.download_url.endswith(".7z")
+      when: not ckb_download_url.endswith(".7z")
 
     - name: Install CKB
       become: true
       shell: |
-        7z e -y -o'{{ ckb.workspace }}' '/tmp/{{ ckb.download_url | basename }}' '*/ckb'
-      when: ckb.download_url.endswith(".7z")
+        7z e -y -o'{{ ckb_workspace }}' '/tmp/{{ ckb_download_url | basename }}' '*/ckb'
+      when: ckb_download_url.endswith(".7z")
   when:
-    - (ckb.local_source is not defined or ckb.local_source == '') and ckb.download_url is defined
+    - (ckb_local_source is not defined or ckb_local_source == '') and ckb_download_url is defined

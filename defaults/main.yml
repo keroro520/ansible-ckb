@@ -1,185 +1,172 @@
-ckb:
-  workspace: /var/lib/ckb
+ckb_workspace: /var/lib/ckb
 
-  # CKB node systemd service name
-  service: ckb
+# CKB node systemd service name
+ckb_service: ckb
 
-  download_url: https://github.com/nervosnetwork/ckb/releases/download/v0.41.0/ckb_v0.41.0_x86_64-unknown-linux-gnu.tar.gz
-  local_source: ""
+ckb_download_url: https://github.com/nervosnetwork/ckb/releases/download/v0.41.0/ckb_v0.41.0_x86_64-unknown-linux-gnu.tar.gz
+# ckb_local_source: ""
 
-  database_url: http://ckbbin.engpro.cryptape.com/fulldb.tar.gz
+ckb_database_url: http://ckbbin.engpro.cryptape.com/fulldb.tar.gz
 
-  ### Node generates random network secret key by default.
-  # network_secret_key: ""
+### Node generates random network secret key by default.
+ckb_network_secret_key: ""
 
-  ############################################################
-  ######################    ckb.toml    ######################
-  ############################################################
+############################################################
+######################    ckb.toml    ######################
+############################################################
 
-  data_dir: /var/lib/ckb/data
+ckb_data_dir: /var/lib/ckb/data
 
-  chain:
-    spec:
-      # Choose the kind of chains to run, possible values:
-      #
-      #   # Custom spec
-      #   #
-      #   # ATTENTION: Local path, not remote path
-      #   - file: <local path to spec file>
-      #
-      #   # Bundle testnet spec
-      #   - bundled: specs/testnet.toml
-      #
-      #   # Bundle mainnet spec
-      #   - bundled: specs/mainnet.toml
-      bundled: specs/mainnet.toml
+## Choose the kind of chains to run, possible values:
+##   - file: <local path to spec file>
+##   - bundled: "specs/testnet.toml"
+##   - bundled: "specs/mainnet.toml"
+# ckb_chain_spec: { bundled: specs/mainnet.toml }
 
-  logger:
-    filter: info
-    color: "true"
-    log_to_file: "true"
-    log_to_stdout: "true"
+## ckb_logger
+ckb_logger_filter: info
+ckb_logger_color: "true"
+ckb_logger_log_to_file: "true"
+ckb_logger_log_to_stdout: "true"
 
-  sentry:
-    # set to blank to disable sentry error collection
-    dsn: ''
-    # if you are willing to help us to improve,
-    # please leave a way to contact you when we have troubles to reproduce the errors.
-    org_contact: ''
+## ckb_sentry
+# set to blank to disable sentry error collection
+ckb_sentry_dsn: ''
+# if you are willing to help us to improve,
+# please leave a way to contact you when we have troubles to reproduce the errors.
+ckb_sentry_org_contact: ''
 
-  db:
-    # The capacity of RocksDB cache, which caches uncompressed data blocks, indexes and filters, default is 128MB.
-    # Rocksdb will automatically create and use an 8MB internal cache if you set this value to 0.
-    # To turning off cache, you need to set this value to 0 and set `no_block_cache = true` in the options_file,
-    # however, we strongly discourage this setting, it may lead to severe performance degradation.
-    cache_size: 134217728
+# The capacity of RocksDB cache, which caches uncompressed data blocks, indexes and filters, default is 128MB.
+# Rocksdb will automatically create and use an 8MB internal cache if you set this value to 0.
+# To turning off cache, you need to set this value to 0 and set `no_block_cache = true` in the options_file,
+# however, we strongly discourage this setting, it may lead to severe performance degradation.
+ckb_db_cache_size: 134217728
 
-    # Provide an options file to tune RocksDB for your workload and your system configuration.
-    # More details can be found in [the official tuning guide](https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide).
-    options_file: default.db-options
-  network:
-    listen_addresses:
-      - /ip4/0.0.0.0/tcp/8115
+# Provide an options file to tune RocksDB for your workload and your system configuration.
+# More details can be found in [the official tuning guide](https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide).
+ckb_db_options_file: default.db-options
 
-    # Specify the public and routable network addresses
-    public_addresses: []
+ckb_network_listen_addresses:
+  - /ip4/0.0.0.0/tcp/8115
 
-    # Node connects to nodes listed here to discovery other peers when there's no local stored peers.
-    # When chain.spec is changed, this usually should also be changed to the bootnodes in the new chain.
-    bootnodes: []
+# Specify the public and routable network addresses
+ckb_network_public_addresses: []
 
-    # Whitelist-only mode
-    whitelist_only: "false"
+# Node connects to nodes listed here to discovery other peers when there's no local stored peers.
+# When chain.spec is changed, this usually should also be changed to the bootnodes in the new chain.
+ckb_network_bootnodes: []
 
-    # Whitelist peers connecting from the given IP addresses
-    whitelist_peers: []
+# Whitelist-only mode
+ckb_network_whitelist_only: "false"
 
-    max_peers: 125
-    max_outbound_peers: 8
+# Whitelist peers connecting from the given IP addresses
+ckb_network_whitelist_peers: []
 
-    # 2 minutes
-    ping_interval_secs: 120
+ckb_network_max_peers: 125
+ckb_network_max_outbound_peers: 8
 
-    # 20 minutes
-    ping_timeout_secs: 1200
-    connect_outbound_interval_secs: 15
+# 2 minutes
+ckb_network_ping_interval_secs: 120
 
-    # If set to true, try to register upnp
-    upnp: "false"
+# 20 minutes
+ckb_network_ping_timeout_secs: 1200
+ckb_network_connect_outbound_interval_secs: 15
 
-    # If set to true, network service will add discovered local address to peer store, it's helpful for private net development
-    discovery_local_address: "true"
+# If set to true, try to register upnp
+ckb_network_upnp: "false"
 
-    # If set to true, random cleanup when there are too many inbound nodes
-  # Ensure that itself can continue to serve as a bootnode node
-    bootnode_mode: "false"
-  rpc:
-    # By default RPC only binds to localhost, thus it only allows accessing from the same machine.
-    #
-    # Allowing arbitrary machines to access the JSON-RPC port is dangerous and strongly discouraged.
-    # Please strictly limit the access to only trusted machines.
-    listen_address: '127.0.0.1:8114'
+# If set to true, network service will add discovered local address to peer store, it's helpful for private net development
+ckb_network_discovery_local_address: "true"
 
-    # Default is 10MiB = 10 * 1024 * 1024
-    max_request_body_size: 10485760
+# If set to true, random cleanup when there are too many inbound nodes
+# Ensure that itself can continue to serve as a bootnode node
+ckb_network_bootnode_mode: "false"
 
-    # List of API modules: ["Net", "Pool", "Miner", "Chain", "Stats", "Subscription", "Experiment", "Debug"]
-    modules:
-      - Net
-      - Pool
-      - Miner
-      - Chain
-      - Stats
-      - Subscription
-      - Experiment
-      - Debug
+# By default RPC only binds to localhost, thus it only allows accessing from the same machine.
+#
+# Allowing arbitrary machines to access the JSON-RPC port is dangerous and strongly discouraged.
+# Please strictly limit the access to only trusted machines.
+ckb_rpc_listen_address: '127.0.0.1:8114'
 
-    # By default RPC only binds to HTTP service, you can bind it to TCP and WebSocket.
-    # tcp_listen_address = "127.0.0.1:18114"
-    # ws_listen_address = "127.0.0.1:28114"
-    reject_ill_transactions: "true"
+# Default is 10MiB = 10 * 1024 * 1024
+ckb_rpc_max_request_body_size: 10485760
 
-    # By default deprecated rpc methods are disabled.
-    enable_deprecated_rpc: "false"
+# List of API modules: ["Net", "Pool", "Miner", "Chain", "Stats", "Subscription", "Experiment", "Debug"]
+ckb_rpc_modules:
+  - Net
+  - Pool
+  - Miner
+  - Chain
+  - Stats
+  - Subscription
+  - Experiment
+  - Debug
 
-  tx_pool:
-    max_mem_size: 20000000
-    max_cycles: 200000000000
-    max_verify_cache_size: 100000
-    max_conflict_cache_size: 1000
-    max_committed_txs_hash_cache_size: 100000
-    min_fee_rate: 1000
-    max_tx_verify_cycles: 70000000
-    max_ancestors_count: 25
+# By default RPC only binds to HTTP service, you can bind it to TCP and WebSocket.
+# tcp_listen_address = "127.0.0.1:18114"
+# ws_listen_address = "127.0.0.1:28114"
+ckb_rpc_reject_ill_transactions: "true"
 
-  store:
-    header_cache_size: 4096
-    cell_data_cache_size: 128
-    block_proposals_cache_size: 30
-    block_tx_hashes_cache_size: 30
-    block_uncles_cache_size: 30
-    cellbase_cache_size: 30
+# By default deprecated rpc methods are disabled.
+ckb_rpc_enable_deprecated_rpc: "false"
 
-  # Set the lock script to protect mined CKB.
-  #
-  # CKB uses CS architecture for miner. Miner process (ckb miner) gets block
-  # template from the Node process (ckb run) via RPC. Thus the lock script is
-  # configured in ckb.toml instead of ckb-miner.toml, and the config takes effect
-  # after restarting Node process.
-  #
-  # The `code_hash` identifies different cryptography algorithm. Read the manual
-  # of the lock script provider about how to generate this config.
-  #
-  # CKB provides an secp256k1 implementation, it requires a hash on the
-  # compressed public key. The hash algorithm is blake2b, with personal
-  # "ckb-default-hash". The first 160 bits (20 bytes) are used as the only arg.
-  #
-  # You can use any tool you trust to generate a Bitcoin private key and public
-  # key pair, which can be used in CKB as well. CKB CLI provides the function for
-  # you to convert the public key into block assembler configuration parameters.
-  #
-  # Here is an example using ckb-cli to generate an account, this command will
-  # print the block assembler args(lock_arg) to screen:
-  #
-  #     ckb-cli account new
-  #
-  # If you already have a raw secp256k1 private key, you can get the lock_arg by:
-  #
-  #     ckb-cli util key-info --privkey-path <privkey-path>
-  #
-  # The command `ckb init` also accepts options to generate the block assembler
-  # directly. See `ckb init --help` for details.
-  #
-  #     ckb init <lock_arg>
-  #
-  # secp256k1_blake160_sighash_all example:
-  # [block_assembler]
-  # code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
-  # args = "ckb-cli util blake2b --prefix-160 <compressed-pubkey>"
-  # hash_type = "type"
-  # message = "A 0x-prefixed hex string"
-  block_assembler:
-    code_hash: "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
-    args: "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
-    hash_type: "type"
-    message: "0x"
+ckb_tx_pool_max_mem_size: 20000000
+ckb_tx_pool_max_cycles: 200000000000
+ckb_tx_pool_max_verify_cache_size: 100000
+ckb_tx_pool_max_conflict_cache_size: 1000
+ckb_tx_pool_max_committed_txs_hash_cache_size: 100000
+ckb_tx_pool_min_fee_rate: 1000
+ckb_tx_pool_max_tx_verify_cycles: 70000000
+ckb_tx_pool_max_ancestors_count: 25
+
+ckb_store_header_cache_size: 4096
+ckb_store_cell_data_cache_size: 128
+ckb_store_block_proposals_cache_size: 30
+ckb_store_block_tx_hashes_cache_size: 30
+ckb_store_block_uncles_cache_size: 30
+ckb_store_cellbase_cache_size: 30
+
+# Set the lock script to protect mined CKB.
+#
+# CKB uses CS architecture for miner. Miner process (ckb miner) gets block
+# template from the Node process (ckb run) via RPC. Thus the lock script is
+# configured in ckb.toml instead of ckb-miner.toml, and the config takes effect
+# after restarting Node process.
+#
+# The `code_hash` identifies different cryptography algorithm. Read the manual
+# of the lock script provider about how to generate this config.
+#
+# CKB provides an secp256k1 implementation, it requires a hash on the
+# compressed public key. The hash algorithm is blake2b, with personal
+# "ckb-default-hash". The first 160 bits (20 bytes) are used as the only arg.
+#
+# You can use any tool you trust to generate a Bitcoin private key and public
+# key pair, which can be used in CKB as well. CKB CLI provides the function for
+# you to convert the public key into block assembler configuration parameters.
+#
+# Here is an example using ckb-cli to generate an account, this command will
+# print the block assembler args(lock_arg) to screen:
+#
+#     ckb-cli account new
+#
+# If you already have a raw secp256k1 private key, you can get the lock_arg by:
+#
+#     ckb-cli util key-info --privkey-path <privkey-path>
+#
+# The command `ckb init` also accepts options to generate the block assembler
+# directly. See `ckb init --help` for details.
+#
+#     ckb init <lock_arg>
+#
+# secp256k1_blake160_sighash_all example:
+# [block_assembler]
+# code_hash = "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
+# args = "ckb-cli util blake2b --prefix-160 <compressed-pubkey>"
+# hash_type = "type"
+# message = "A 0x-prefixed hex string"
+
+# ckb_block_assembler:
+#   code_hash: "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
+#   args: "ckb-cli util blake2b --prefix-160 <compressed-pubkey>"
+#   hash_type: "type"
+#   message: "A 0x-prefixed hex string"
