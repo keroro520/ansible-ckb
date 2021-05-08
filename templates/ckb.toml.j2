@@ -8,7 +8,8 @@ data_dir = "{{ ckb_data_dir | default("/var/lib/ckb/data") }}"
 {# spec = {{ ckb_chain_spec_bundled | '{' file = "specs/dev.toml" '}'  }} #}
 {# spec = "{{ ckb_chain_spec_bundled | ckb_chain_spec_file  }}" #}
 
-spec = { bundled = "specs/mainnet.toml" }
+# `ckb_chain_spec` variable created at runtime
+spec = {{ ckb_chain_spec }}
 
 [logger]
 filter = "{{ ckb_logger_filter | default("info") }}"
