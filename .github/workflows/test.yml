@@ -1,0 +1,15 @@
+name: Test
+
+
+on:
+  issue_comment:
+    types: [ created ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: git log | head
+      - run: cat README.md
