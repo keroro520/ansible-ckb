@@ -3,26 +3,35 @@
 
 - name: Assert CKB Database Directory Empty
   block:
-    - name: Check If CKB Database Directory is Empty Before Proceeding
+    - name: Check If CKB Database Directory Is Empty Before Proceeding
       find:
-        paths: "{{ ckb.data_dir }}/db"
+        paths: "{{ ckb_data_dir }}/db"
       register: db_files
-    - fail:
-        msg: "{{ ckb.data_dir }}/db is not empty. Please clean it first."
+    - name: Fail If CKB Database Directory Is Not Empty
+      fail:
+        msg: "{{ ckb_data_dir }}/db is not empty. Please clean it first."
       when: db_files.matched > 0
+  when: ckb_database_url is defined and ckb_database_url != ''
 
 - name: Download Archived Data
   get_url:
-    url: "{{ ckb.database_url }}"
+    url: "{{ ckb_database_url }}"
     dest: /tmp/ckbdb.tar.gz
-  when: ckb.database_url is defined and ckb.database_url != ''
+    force: false
+  when: ckb_database_url is defined and ckb_database_url != ''
 
-- name: Unarchive Archived Data
+- name: Unarchive Archived Data To CKB Database Directory
   unarchive:
     remote_src: true
     src: /tmp/ckbdb.tar.gz
-    dest: "{{ ckb.data_dir }}"
+    dest: "{{ ckb_data_dir }}"
+  when: ckb_database_url is defined and ckb_database_url != ''
+
+- name: Chown CKB Database Directory
+  file:
+    dest: "{{ ckb_data_dir }}/db/"
     group: ckb
     owner: ckb
-    mode: 0666
-  when: ckb.database_url is defined and ckb.database_url != ''
+    mode: 0777
+    recurse: true
+  when: ckb_database_url is defined and ckb_database_url != ''
