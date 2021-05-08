@@ -16,14 +16,17 @@
 - name: Download Archived Data
   get_url:
     url: "{{ ckb_database_url }}"
-    dest: /tmp/ckbdb.tar.gz
+    dest: "/tmp/{{ ckb_database_url | basename }}"
+    group: ckb
+    owner: ckb
+    mode: 0777
     force: false
   when: ckb_database_url is defined and ckb_database_url != ''
 
 - name: Unarchive Archived Data To CKB Database Directory
   unarchive:
     remote_src: true
-    src: /tmp/ckbdb.tar.gz
+    src: "/tmp/{{ ckb_database_url | basename }}"
     dest: "{{ ckb_data_dir }}"
   when: ckb_database_url is defined and ckb_database_url != ''
 
