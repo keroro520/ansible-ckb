@@ -19,12 +19,34 @@
         group: ckb
         owner: ckb
         mode: 0666
+      notify: Restart CKB
     - name: Truncate Variable `ckb_db_options_file`
       set_fact:
         ckb_db_options_file: "{{ ckb_db_options_file | basename }}"
-      notify: Restart CKB
   when:
     - ckb_db_options_file is defined and ckb_db_options_file != ''
+
+- name: Create Custom CKB Chain Spec File
+  block:
+    - name: Create Custom CKB Chain Spec File
+      copy:
+        src: "{{ ckb_chain_spec_file }}"
+        dest: "{{ ckb_workspace }}/{{ ckb_chain_spec_file | basename }}"
+        group: ckb
+        owner: ckb
+        mode: 0666
+      notify: Restart CKB
+    - name: Create/Update Variable `ckb_chain_spec` For Custom
+      set_fact:
+        ckb_chain_spec: "{ file = \"{{ ckb_chain_spec_file | basename }}\" }"
+  when:
+    - ckb_chain_spec_file is defined and ckb_chain_spec_file != ''
+
+- name: Create/Update Variable `ckb_chain_spec` For Bundled
+  set_fact:
+    ckb_chain_spec: "{ bundled = \"{{ ckb_chain_spec_bundled }}\" }"
+  when:
+    - ckb_chain_spec_bundled is defined and ckb_chain_spec_bundled != '' and (ckb_chain_spec_file is not defined or ckb_chain_spec_file == '')
 
 - name: Create CKB Main Configuration File
   template:
@@ -34,25 +56,6 @@
     owner: ckb
     mode: 0666
   notify: Restart CKB
-
-    # - name: Assert `ckb_chain_spec` be one of available values
-    #   assert:
-    #     that:
-    #       - ckb_chain_spec == { file = "spec.toml" }
-    #       - ckb_chain_spec == { bundled = "specs/mainnet.toml" }
-    #       - ckb_chain_spec == { bundled = "specs/testnet.toml" }
-    # 
-    # # TODO test custom spec
-    # - name: Create Chain Spec
-    #   template:
-    #     src: "{{ ckb_chain_spec_file_path }}"
-    #     dest: "{{ ckb_workspace }}/spec.toml"
-    #     group: ckb
-    #     owner: ckb
-    #     mode: 0666
-    #   notify: Restart CKB
-    #   when:
-    #     - ckb_chain_spec == { file = "spec.toml" }
 
 - name: Create CKB Systemd Configuration File
   become: true
