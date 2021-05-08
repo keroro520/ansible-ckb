@@ -1,5 +1,4 @@
 ---
-# TODO assert ckb_download_url and ckb_local_source
 - name: Install CKB From Local Source
   copy:
     force: true
