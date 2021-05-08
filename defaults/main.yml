@@ -17,11 +17,13 @@ ckb_network_secret_key: ""
 
 ckb_data_dir: /var/lib/ckb/data
 
+## ckb_chain_spec_bundled and ckb_chain_spec_file are mutex
+#
 ## Choose the kind of chains to run, possible values:
-##   - file: <local path to spec file>
-##   - bundled: "specs/testnet.toml"
-##   - bundled: "specs/mainnet.toml"
-# ckb_chain_spec: { bundled: specs/mainnet.toml }
+##   - "specs/testnet.toml"
+##   - "specs/mainnet.toml"
+ckb_chain_spec_bundled: specs/mainnet.toml
+# ckb_chain_spec_file: <local spec file path>
 
 ## ckb_logger
 ckb_logger_filter: info

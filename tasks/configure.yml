@@ -28,7 +28,7 @@
 
 - name: Create Custom CKB Chain Spec File
   block:
-    - name: Copy Custom CKB Chain Spec File
+    - name: Create Custom CKB Chain Spec File
       copy:
         src: "{{ ckb_chain_spec_file }}"
         dest: "{{ ckb_workspace }}/{{ ckb_chain_spec_file | basename }}"
@@ -46,7 +46,7 @@
   set_fact:
     ckb_chain_spec: "{ bundled = \"{{ ckb_chain_spec_bundled }}\" }"
   when:
-    - ckb_chain_spec_bundled is defined and ckb_chain_spec_bundled != ''
+    - ckb_chain_spec_bundled is defined and ckb_chain_spec_bundled != '' and (ckb_chain_spec_file is not defined or ckb_chain_spec_file == '')
 
 - name: Create CKB Main Configuration File
   template:
