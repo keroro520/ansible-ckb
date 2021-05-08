@@ -1,38 +1,62 @@
 ---
-- name: Create CKB Main Configuration File
-  template:
-    src: ckb.toml.j2
-    dest: "{{ ckb.workspace }}/ckb.toml"
-    group: ckb
-    owner: ckb
-    mode: 0666
-  notify: Restart CKB
-
-- name: Create Chain Spec
-  template:
-    src: "{{ ckb.spec.file }}"
-    dest: "{{ ckb.workspace }}/spec.toml"
-    group: ckb
-    owner: ckb
-    mode: 0666
-  notify: Restart CKB
-  when:
-    - ckb.spec.file is defined and ckb.spec.file != ''
-
-- name: Create CKB Network Secret Key
+- name: Create Custom CKB Network Secret Key
   copy:
-    src: "{{ ckb.network_secret_key }}"
-    dest: "{{ ckb.data_dir }}/network/secret_key"
+    src: "{{ ckb_network_secret_key }}"
+    dest: "{{ ckb_data_dir }}/network/secret_key"
     group: ckb
     owner: ckb
     mode: 0400
   notify: Restart CKB
   when:
-    - ckb.network_secret_key is defined
+    - ckb_network_secret_key is defined and ckb_network_secret_key != ''
+
+- name: Create Custom CKB Database Options File
+  block:
+    - name: Copy Custom CKB Database Options File
+      copy:
+        src: "{{ ckb_db_options_file }}"
+        dest: "{{ ckb_workspace }}/{{ ckb_db_options_file | basename }}"
+        group: ckb
+        owner: ckb
+        mode: 0666
+    - name: Truncate Variable `ckb_db_options_file`
+      set_fact:
+        ckb_db_options_file: "{{ ckb_db_options_file | basename }}"
+      notify: Restart CKB
+  when:
+    - ckb_db_options_file is defined and ckb_db_options_file != ''
+
+- name: Create CKB Main Configuration File
+  template:
+    src: ckb.toml.j2
+    dest: "{{ ckb_workspace }}/ckb.toml"
+    group: ckb
+    owner: ckb
+    mode: 0666
+  notify: Restart CKB
+
+    # - name: Assert `ckb_chain_spec` be one of available values
+    #   assert:
+    #     that:
+    #       - ckb_chain_spec == { file = "spec.toml" }
+    #       - ckb_chain_spec == { bundled = "specs/mainnet.toml" }
+    #       - ckb_chain_spec == { bundled = "specs/testnet.toml" }
+    # 
+    # # TODO test custom spec
+    # - name: Create Chain Spec
+    #   template:
+    #     src: "{{ ckb_chain_spec_file_path }}"
+    #     dest: "{{ ckb_workspace }}/spec.toml"
+    #     group: ckb
+    #     owner: ckb
+    #     mode: 0666
+    #   notify: Restart CKB
+    #   when:
+    #     - ckb_chain_spec == { file = "spec.toml" }
 
 - name: Create CKB Systemd Configuration File
   become: true
   template:
     src: ckb.service.j2
-    dest: /etc/systemd/system/{{ ckb.service }}.service
+    dest: /etc/systemd/system/{{ ckb_service }}.service
   notify: Restart CKB
