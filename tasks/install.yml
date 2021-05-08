@@ -19,7 +19,7 @@
         url: "{{ ckb_download_url }}"
         dest: /tmp/
 
-    - name: Install CKB
+    - name: Unarchive CKB Tarball
       become: true
       unarchive:
         remote_src: true
@@ -33,7 +33,7 @@
           - 's/.*\/ckb$/ckb/'  # transform "xxx/ckb" => "ckb"
       when: not ckb_download_url.endswith(".7z")
 
-    - name: Install CKB
+    - name: Unarchive CKB 7z-Tarball
       become: true
       shell: |
         7z e -y -o'{{ ckb_workspace }}' '/tmp/{{ ckb_download_url | basename }}' '*/ckb'
