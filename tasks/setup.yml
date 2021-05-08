@@ -21,6 +21,6 @@
     mode: 0777
   with_items:
     - "{{ ckb.workspace }}"
-    - "{{ ckb.workspace }}/data"
-    - "{{ ckb.workspace }}/data/db"
-    - "{{ ckb.workspace }}/data/network"
+    - "{{ ckb.data_dir }}"
+    - "{{ ckb.data_dir }}/db"
+    - "{{ ckb.data_dir }}/network"

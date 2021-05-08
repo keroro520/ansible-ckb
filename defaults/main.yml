@@ -2,7 +2,7 @@ ckb:
   workspace: /var/lib/ckb
 
   # CKB node systemd service name
-  service: ckb-node
+  service: ckb
 
   download_url: https://github.com/nervosnetwork/ckb/releases/download/v0.41.0/ckb_v0.41.0_x86_64-unknown-linux-gnu.tar.gz
   local_source: ""
@@ -16,7 +16,7 @@ ckb:
   ######################    ckb.toml    ######################
   ############################################################
 
-  data_dir: data
+  data_dir: /var/lib/ckb/data
 
   chain:
     spec:
@@ -36,9 +36,9 @@ ckb:
 
   logger:
     filter: info
-    color: true
-    log_to_file: true
-    log_to_stdout: true
+    color: "true"
+    log_to_file: "true"
+    log_to_stdout: "true"
 
   sentry:
     # set to blank to disable sentry error collection
@@ -69,7 +69,7 @@ ckb:
     bootnodes: []
 
     # Whitelist-only mode
-    whitelist_only: false
+    whitelist_only: "false"
 
     # Whitelist peers connecting from the given IP addresses
     whitelist_peers: []
@@ -85,14 +85,14 @@ ckb:
     connect_outbound_interval_secs: 15
 
     # If set to true, try to register upnp
-    upnp: false
+    upnp: "false"
 
     # If set to true, network service will add discovered local address to peer store, it's helpful for private net development
-    discovery_local_address: true
+    discovery_local_address: "true"
 
     # If set to true, random cleanup when there are too many inbound nodes
   # Ensure that itself can continue to serve as a bootnode node
-    bootnode_mode: false
+    bootnode_mode: "false"
   rpc:
     # By default RPC only binds to localhost, thus it only allows accessing from the same machine.
     #
@@ -117,10 +117,10 @@ ckb:
     # By default RPC only binds to HTTP service, you can bind it to TCP and WebSocket.
     # tcp_listen_address = "127.0.0.1:18114"
     # ws_listen_address = "127.0.0.1:28114"
-    reject_ill_transactions: true
+    reject_ill_transactions: "true"
 
     # By default deprecated rpc methods are disabled.
-    enable_deprecated_rpc: false
+    enable_deprecated_rpc: "false"
 
   tx_pool:
     max_mem_size: 20000000
@@ -180,6 +180,6 @@ ckb:
   # message = "A 0x-prefixed hex string"
   block_assembler:
     code_hash: "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"
-    args: ""
-    hash_type: type
+    args: "0xc8328aabcd9b9e8e64fbc566c4385c3bdeb219d7"
+    hash_type: "type"
     message: "0x"

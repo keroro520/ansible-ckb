@@ -2,13 +2,13 @@
 - name: Install CKB From Local Source
   copy:
     force: true
-    src: {{ ckb.local_source }}
-    dest: {{ ckb.workspace }}/ckb
+    src: "{{ ckb.local_source }}"
+    dest: "{{ ckb.workspace }}/ckb"
     group: ckb
     user: ckb
-    mode: 0777
+    mode: "+x"
   when:
-    - ckb.local_source is defined
+    - ckb.local_source is defined and ckb.local_source != ''
 
 - name: Install CKB From Remote Source
   block:
@@ -16,15 +16,15 @@
       become: true
       get_url:
         force: true
-        url: {{ ckb.download_url }}
+        url: "{{ ckb.download_url }}"
         dest: /tmp/
 
     - name: Install CKB
       become: true
       unarchive:
-        remove_src: yes
-        src: /tmp/{{ ckb.download_url | basename }}
-        dest: {{ ckb.workspace }}
+        remote_src: true
+        src: "/tmp/{{ ckb.download_url | basename }}"
+        dest: "{{ ckb.workspace }}"
         mode: 0777
         extra_opts:
           - --wildcards
@@ -39,4 +39,4 @@
         7z e -y -o'{{ ckb.workspace }}' '/tmp/{{ ckb.download_url | basename }}' '*/ckb'
       when: ckb.download_url.endswith(".7z")
   when:
-    - ckb.local_source is not defined and ckb.download_url is defined
+    - (ckb.local_source is not defined or ckb.local_source == '') and ckb.download_url is defined

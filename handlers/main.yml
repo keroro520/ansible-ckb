@@ -2,6 +2,6 @@
 - name: Restart CKB
   become: true
   service:
-    name: {{ ckb.service }}
+    name: "{{ ckb.service }}"
     state: restarted
     daemon_reload: true

@@ -1,13 +1,28 @@
 ---
-- name: Download Database Data
+# TODO stop ckb before proceeding
+
+- name: Assert CKB Database Directory Empty
+  block:
+    - name: Check If CKB Database Directory is Empty Before Proceeding
+      find:
+        paths: "{{ ckb.data_dir }}/db"
+      register: db_files
+    - fail:
+        msg: "{{ ckb.data_dir }}/db is not empty. Please clean it first."
+      when: db_files.matched > 0
+
+- name: Download Archived Data
   get_url:
-    url: {{ ckb.database_url }}
+    url: "{{ ckb.database_url }}"
     dest: /tmp/ckbdb.tar.gz
   when: ckb.database_url is defined and ckb.database_url != ''
 
-- name: Unarchive Database Data
+- name: Unarchive Archived Data
   unarchive:
     remote_src: true
     src: /tmp/ckbdb.tar.gz
-    dest: {{ ckb.workspace }}/data/
+    dest: "{{ ckb.data_dir }}"
+    group: ckb
+    owner: ckb
+    mode: 0666
   when: ckb.database_url is defined and ckb.database_url != ''

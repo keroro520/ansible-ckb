@@ -14,7 +14,7 @@
 
 - name: Print `local_node_info`
   debug:
-    msg: {{ local_node_info.json.result }}
+    msg: "{{ local_node_info.json.result }}"
 
 - name: RPC Call `get_tip_block_number`
   uri:
@@ -32,4 +32,4 @@
 
 - name: Print `get_tip_block_numner`
   debug:
-    msg: {{ get_tip_block_number.json.result }}
+    msg: "{{ get_tip_block_number.json.result }}"

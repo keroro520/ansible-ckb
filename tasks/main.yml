@@ -32,10 +32,26 @@
     - ckb_install
     - ckb_configure
 
+- name: Restart CKB
+  become: true
+  service:
+    name: "{{ ckb.service }}"
+    state: restarted
+  tags:
+    - ckb_restart
+
+- name: Start CKB
+  become: true
+  service:
+    name: "{{ ckb.service }}"
+    state: started
+  tags:
+    - ckb_start
+
 - name: Stop CKB
   become: true
   service:
-    name: {{ ckb.service }}
+    name: "{{ ckb.service }}"
     state: stopped
   tags:
     - ckb_stop

@@ -1,28 +1,28 @@
-data_dir = {{ ckb.data_dir }}
+data_dir = "{{ ckb.data_dir }}"
 
 [chain]
-# Choose the kind of chains to run, possible values:
-# - { file = "specs/dev.toml" }
-# - { bundled = "specs/testnet.toml" }
-# - { bundled = "specs/mainnet.toml" }
-spec = {{ ckb.chain.spec.bundled | { file = "specs/dev.toml"}  }}
+{# Choose the kind of chains to run, possible values: #}
+{# - { file = "specs/dev.toml" }                      #}
+{# - { bundled = "specs/testnet.toml" }               #}
+{# - { bundled = "specs/mainnet.toml" }               #}
+{# spec = {{ ckb.chain.spec.bundled | '{' file = "specs/dev.toml" '}'  }} #}
+{# spec = "{{ ckb.chain.spec.bundled | ckb.chain.spec.file  }}" #}
+
+# TODO
+spec = { bundled = "specs/mainnet.toml" }
 
 [logger]
-filter = {{ ckb.logger.filter }}
+filter = "{{ ckb.logger.filter }}"
 color = {{ ckb.logger.color }}
 log_to_file = {{ ckb.logger.log_to_file }}
 log_to_stdout = {{ ckb.logger.log_to_stdout }}
 
 [sentry]
 # set to blank to disable sentry error collection
-dsn = {{ ckb.sentry.dsn }}
+dsn = "{{ ckb.sentry.dsn }}"
 # if you are willing to help us to improve,
 # please leave a way to contact you when we have troubles to reproduce the errors.
-org_contact = {{ ckb.sentry.org_contact }}
-
-# [memory_tracker]
-# # Seconds between checking the process, 0 is disable, default is 0.
-# interval = 600
+org_contact = "{{ ckb.sentry.org_contact }}"
 
 [db]
 # The capacity of RocksDB cache, which caches uncompressed data blocks, indexes and filters, default is 128MB.
@@ -33,10 +33,11 @@ cache_size = {{ ckb.db.cache_size }}
 
 # Provide an options file to tune RocksDB for your workload and your system configuration.
 # More details can be found in [the official tuning guide](https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide).
-options_file = {{ ckb.db.options_file }}
+# options_file = "default.db-options"
 
 [network]
 listen_addresses = {{ ckb.network.listen_addresses }}
+
 ### Specify the public and routable network addresses
 # public_addresses = []
 
@@ -69,7 +70,7 @@ bootnode_mode = {{ ckb.network.bootnode_mode }}
 #
 # Allowing arbitrary machines to access the JSON-RPC port is dangerous and strongly discouraged.
 # Please strictly limit the access to only trusted machines.
-listen_address = {{ ckb.rpc.listen_address }}
+listen_address = "{{ ckb.rpc.listen_address }}"
 
 # Default is 10MiB = 10 * 1024 * 1024
 max_request_body_size = {{ ckb.rpc.max_request_body_size }}
@@ -143,7 +144,7 @@ cellbase_cache_size        = {{ ckb.store.cellbase_cache_size        }}
 #
 # secp256k1_blake160_sighash_all example:
 [block_assembler]
-code_hash = {{ ckb.block_assembler.code_hash }}
-args = {{ ckb.block_assembler.args }}
-hash_type = {{ ckb.block_assembler.hash_type }}
-message = {{ ckb.block_assembler.message }}
+code_hash = "{{ ckb.block_assembler.code_hash }}"
+args = "{{ ckb.block_assembler.args }}"
+hash_type = "{{ ckb.block_assembler.hash_type }}"
+message = "{{ ckb.block_assembler.message }}"
