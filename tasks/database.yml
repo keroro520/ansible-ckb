@@ -1,7 +1,18 @@
 ---
-# TODO stop ckb before proceeding
+- name: Check CKB Service Stopped
+  block:
+    - name: Check CKB Service Status
+      become: true
+      shell: "systemctl is-active {{ ckb_service }}"
+      register: ckb_service_status
+      ignore_errors: true
+    - name: Fail If CKB Service Is Not Stopped
+      fail:
+        msg: "{{ ckb_service }} is running. Please stop it before proceeding"
+      when: ckb_service_status.stdout != "inactive"
+  when: ckb_database_url is defined and ckb_database_url != ''
 
-- name: Assert CKB Database Directory Empty
+- name: Check CKB Database Directory Empty
   block:
     - name: Check If CKB Database Directory Is Empty Before Proceeding
       find:
@@ -9,7 +20,7 @@
       register: db_files
     - name: Fail If CKB Database Directory Is Not Empty
       fail:
-        msg: "{{ ckb_data_dir }}/db is not empty. Please clean it first."
+        msg: "{{ ckb_data_dir }}/db is not empty. Please clean it before proceeding"
       when: db_files.matched > 0
   when: ckb_database_url is defined and ckb_database_url != ''
 
