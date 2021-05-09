@@ -3,17 +3,17 @@
   tags:
     - ckb_preflight
     - ckb_setup
-    - ckb_configure
-    - ckb_database
     - ckb_install
+    - ckb_database
+    - ckb_configure
 
 - include: setup.yml
   become: true
   tags:
     - ckb_setup
-    - ckb_configure
-    - ckb_database
     - ckb_install
+    - ckb_database
+    - ckb_configure
 
 - include: install.yml
   become: true

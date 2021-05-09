@@ -5,7 +5,7 @@
     src: "{{ ckb_local_source }}"
     dest: "{{ ckb_workspace }}/ckb"
     group: ckb
-    user: ckb
+    owner: ckb
     mode: "+x"
   when:
     - ckb_local_source is defined and ckb_local_source != ''
