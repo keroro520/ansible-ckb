@@ -178,6 +178,7 @@ ckb_store_cellbase_cache_size: 30
 ######################    ckb-miner.toml    ################
 ############################################################
 
+ckb_miner_data_dir: "{{ ckb_data_dir }}"
 ckb_miner_block_on_submit: "true"
 ckb_miner_poll_interval: "1_000_000_000_000"
 ckb_miner_workers:
