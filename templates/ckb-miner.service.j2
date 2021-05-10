@@ -1,5 +1,5 @@
 [Unit]
-Description=CKB Node
+Description=CKB Miner
 After=network.service
 StartLimitIntervalSec=0
 
@@ -9,7 +9,7 @@ Restart=no
 RestartSec=2
 User=ckb
 Group=ckb
-ExecStart={{ ckb_workspace }}/ckb run -C {{ ckb_workspace }}
+ExecStart={{ ckb_workspace }}/ckb miner -C {{ ckb_workspace }}
 
 [Install]
 WantedBy=multi-user.target

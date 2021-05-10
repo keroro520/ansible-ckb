@@ -34,11 +34,6 @@
   tags:
     - ckb_status
 
-- include: command.yml
-  become: true
-  tags:
-    - ckb_command
-
 - name: Restart CKB
   become: true
   meta: flush_handlers
@@ -76,3 +71,27 @@
   tags:
     - ckb_restart
     - ckb_start
+
+- name: Stop CKB Miner
+  become: true
+  service:
+    name: "{{ ckb_service }}-miner"
+    state: stopped
+  tags:
+    - ckb_miner_stop
+
+- name: Restart CKB Miner
+  become: true
+  service:
+    name: "{{ ckb_service }}-miner"
+    state: restarted
+  tags:
+    - ckb_miner_restart
+
+- name: Start CKB Miner
+  become: true
+  service:
+    name: "{{ ckb_service }}-miner"
+    state: started
+  tags:
+    - ckb_miner_start

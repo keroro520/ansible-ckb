@@ -5,3 +5,10 @@
     name: "{{ ckb_service }}"
     state: restarted
     daemon_reload: true
+
+- name: Restart CKB Miner
+  become: true
+  service:
+    name: "{{ ckb_miner_service }}"
+    state: restarted
+    daemon_reload: true

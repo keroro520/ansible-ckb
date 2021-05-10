@@ -172,3 +172,15 @@ ckb_store_cellbase_cache_size: 30
 #   args: "ckb-cli util blake2b --prefix-160 <compressed-pubkey>"
 #   hash_type: "type"
 #   message: "A 0x-prefixed hex string"
+#
+
+############################################################
+######################    ckb-miner.toml    ################
+############################################################
+
+ckb_miner_block_on_submit: "true"
+ckb_miner_poll_interval: "1_000_000_000_000"
+ckb_miner_workers:
+  - worker_type: "Dummy"
+    delay_type: "Constant"
+    value: 1000
