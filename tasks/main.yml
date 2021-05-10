@@ -34,6 +34,11 @@
   tags:
     - ckb_status
 
+- include: command.yml
+  become: true
+  tags:
+    - ckb_command
+
 - name: Restart CKB
   become: true
   meta: flush_handlers
