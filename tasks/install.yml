@@ -1,12 +1,31 @@
 ---
 - name: Install CKB From Local Source
-  copy:
-    force: true
-    src: "{{ ckb_local_source }}"
-    dest: "{{ ckb_workspace }}/ckb"
-    group: ckb
-    owner: ckb
-    mode: "+x"
+  block:
+    - name: Upload CKB Tarball From Local
+      copy:
+        force: true
+        src: "{{ ckb_local_source }}"
+        dest: "/tmp/{{ ckb_local_source | basename }}"
+        group: ckb
+        owner: ckb
+    - name: Unarchive CKB Tarball
+      become: true
+      unarchive:
+        remote_src: true
+        src: "/tmp/{{ ckb_local_source | basename }}"
+        dest: "{{ ckb_workspace }}"
+        mode: 0777
+        extra_opts:
+          - --wildcards
+          - '*ckb'             # unarchive "ckb" only
+          - --transform
+          - 's/.*\/ckb$/ckb/'  # transform "xxx/ckb" => "ckb"
+      when: not ckb_local_source.endswith(".7z")
+    - name: Unarchive CKB 7z-Tarball
+      become: true
+      shell: |
+        7z e -y -o'{{ ckb_workspace }}' '/tmp/{{ ckb_local_source | basename }}' '*/ckb'
+      when: ckb_local_source.endswith(".7z")
   when:
     - ckb_local_source is defined and ckb_local_source != ''
 
@@ -18,7 +37,6 @@
         force: true
         url: "{{ ckb_download_url }}"
         dest: /tmp/
-
     - name: Unarchive CKB Tarball
       become: true
       unarchive:
@@ -32,7 +50,6 @@
           - --transform
           - 's/.*\/ckb$/ckb/'  # transform "xxx/ckb" => "ckb"
       when: not ckb_download_url.endswith(".7z")
-
     - name: Unarchive CKB 7z-Tarball
       become: true
       shell: |
