@@ -9,7 +9,7 @@ Restart=no
 RestartSec=2
 User=ckb
 Group=ckb
-ExecStart={{ ckb_workspace }}/ckb run -C {{ ckb_workspace }}
+ExecStart={{ ckb_workspace }}/ckb run -C {{ ckb_workspace }} --assume-valid-target 0x39650d7c85769c2c909f560b4cd9cfdd3521f15d2adef45d8872bc67830601c7
 
 [Install]
 WantedBy=multi-user.target
