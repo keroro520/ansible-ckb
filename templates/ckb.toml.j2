@@ -32,19 +32,19 @@ cache_size = {{ ckb_db_cache_size | default("134217728") }}
 options_file = "{{ ckb_db_options_file | default("default.db-options") }}"
 
 [network]
-listen_addresses = {{ ckb_network_listen_addresses | default(["/ip4/0.0.0.0/tcp/8115"]) }}
+listen_addresses = {{ ckb_network_listen_addresses | default(["/ip4/0.0.0.0/tcp/8115"]) | to_json }}
 
 ### Specify the public and routable network addresses
-public_addresses = {{ ckb_network_public_addresses | default([]) }}
+public_addresses = {{ ckb_network_public_addresses | default([]) | to_json }}
 
 # Node connects to nodes listed here to discovery other peers when there's no local stored peers.
 # When chain.spec is changed, this usually should also be changed to the bootnodes in the new chain.
-bootnodes = {{ ckb_network_bootnodes | default([]) }}
+bootnodes = {{ ckb_network_bootnodes | default([]) | to_json }}
 
 ### Whitelist-only mode
 whitelist_only     = {{ ckb_network_whitelist_only | default("false") }}
 ### Whitelist peers connecting from the given IP addresses
-whitelist_peers    = {{ ckb_network_whitelist_peers | default([]) }}
+whitelist_peers    = {{ ckb_network_whitelist_peers | default([]) | to_json }}
 
 max_peers          = {{ ckb_network_max_peers | default(125) }}
 max_outbound_peers = {{ ckb_network_max_outbound_peers | default(8) }}
@@ -70,7 +70,7 @@ listen_address = "{{ ckb_rpc_listen_address | default("127.0.0.1:8114") }}"
 max_request_body_size = {{ ckb_rpc_max_request_body_size | default(10485760) }}
 
 # List of API modules: ["Net", "Pool", "Miner", "Chain", "Stats", "Subscription", "Experiment", "Debug"]
-modules = {{ ckb_rpc_modules }}
+modules = {{ ckb_rpc_modules | to_json }}
 
 # By default RPC only binds to HTTP service, you can bind it to TCP and WebSocket.
 # tcp_listen_address = "127.0.0.1:18114"
