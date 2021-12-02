@@ -1,4 +1,4 @@
-ckb_download_url: https://github.com/nervosnetwork/ckb/releases/download/v0.41.0/ckb_v0.41.0_x86_64-unknown-linux-gnu.tar.gz
+ckb_download_url: https://github.com/nervosnetwork/ckb/releases/download/v0.101.1/ckb_v0.101.1_x86_64-unknown-linux-gnu.tar.gz
 # ckb_local_source: ""
 
 ckb_database_url: ""
